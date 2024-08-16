@@ -33,14 +33,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       {/* Footer */}
       <footer className="w-full h-24 flex items-center justify-center border-t mt-auto">
         <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+          href="https://www.wu.ac.th/th"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-center gap-2"
         >
-          Powered by{' '}
           <Image
-            src="/vercel.svg"
+            src="https://upload.wikimedia.org/wikipedia/th/thumb/e/ed/Walailak_University_Logo.svg/480px-Walailak_University_Logo.svg.png"
             alt="Vercel Logo"
             width={100}
             height={24}

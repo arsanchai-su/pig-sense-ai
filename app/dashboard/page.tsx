@@ -1,33 +1,76 @@
 "use client";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Layout from '@/components/Layout';
 
 const Dashboard: React.FC = () => {
-  const [selectedVideo, setSelectedVideo] = useState<string>('video1');
+  const videoId = 'kKZ1qri1DGY'; // Hardcode video1 ID
+  const [player, setPlayer] = useState<YT.Player | null>(null);
 
-  const videos: Record<string, string> = {
-    video1: 'https://www.youtube.com/embed/wqSPykG8i_g?autoplay=1&mute=1',
-    video2: 'https://www.youtube.com/embed/INZBH3qnTUo?autoplay=1&mute=1',
-    video3: 'https://www.youtube.com/embed/VIDEO_ID_3?autoplay=1&mute=1',
-  };
+  useEffect(() => {
+    const initializePlayer = () => {
+      if (player) {
+        player.destroy(); // Destroy the existing player before re-initializing
+      }
+
+      const newPlayer = new YT.Player('videoPlayer', {
+        videoId: videoId, // Always use video1 ID
+        events: {
+          'onReady': (event: YT.PlayerEvent) => {
+            event.target.playVideo();
+          },
+          'onStateChange': (event: YT.OnStateChangeEvent) => {
+            if (event.data === YT.PlayerState.ENDED) {
+              event.target.seekTo(0); // Restart the video
+              event.target.playVideo(); // Play the video again
+            }
+          },
+        },
+        playerVars: {
+          autoplay: 1,
+          mute: 1,
+        },
+      });
+      setPlayer(newPlayer);
+    };
+
+    if (typeof window !== 'undefined' && (window as any).YT && (window as any).YT.Player) {
+      initializePlayer(); // API is already loaded, initialize the player
+    } else {
+      // Load the YouTube API script
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      const firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
+
+      (window as any).onYouTubeIframeAPIReady = () => {
+        initializePlayer(); // Initialize the player once the API is ready
+      };
+    }
+
+    return () => {
+      if (player) {
+        player.destroy();
+        setPlayer(null); // Reset player state
+      }
+    };
+  }, []);
 
   return (
     <Layout>
-      <select onChange={(e) => setSelectedVideo(e.target.value)} value={selectedVideo}>
-        <option value="video1">Video 1</option>
-        <option value="video2">Video 2</option>
-        <option value="video3">Video 3</option>
+      {/* Text before select */}
+      <h1 className="text-2xl font-bold mb-4">ภาพวีดีโอแสดงการทำงานตรวจจับพฤติกรรมสุกร</h1>
+      
+      {/* Dummy select option, non-functional */}
+      <select>
+        <option>คอกที่ 1 ฟาร์มอำเภอท่าศาลา</option>
+        <option>คอกที่ 2 ฟาร์มอำเภอท่าศาลา</option>
+        <option>คอกที่ 3 ฟาร์มอำเภอท่าศาลา</option>
       </select>
-      <iframe 
-        id="videoPlayer"
-        width="560" 
-        height="315" 
-        src={videos[selectedVideo]} 
-        title="YouTube video player" 
-        frameBorder="0" 
-        allow="autoplay; encrypted-media" 
-        allowFullScreen 
-      />
+      
+      <div id="videoPlayer" />
+      {/* Text after vedio player */}
+      <h1 className="text-1xl font-bold mb-4 text-gray-600">**เป็นการจำลองการแสดงผลเท่านั้น</h1>
+
     </Layout>
   );
 };
