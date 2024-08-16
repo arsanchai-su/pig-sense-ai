@@ -14,10 +14,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         {/* Sidebar */}
         <nav className="w-full sm:w-1/4 lg:w-1/5 p-6 bg-gradient-to-b from-zinc-200 dark:from-inherit border-r border-gray-300 dark:border-neutral-800 backdrop-blur-2xl dark:bg-zinc-800/30">
           <Link href="/dashboard" className="block mb-4">
-            Dashboard
+            Real-Time Detection
           </Link>
           <Link href="/report" className="block mb-4">
-            Report
+            รายงานผลการตรวจจับพฤติกรรมสุกร
           </Link>
           <Link href="/about-me" className="block">
             About Me

@@ -2,7 +2,6 @@
 
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
-import 'chartjs-adapter-date-fns'; // This can be removed if not using date functionalities
 
 // Register required components for Chart.js
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
@@ -33,6 +32,8 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
           display: true,
           text: 'เวลาในการทำกิจกรรมของสุกรทั้งคอก (ชั่วโมง)',
         },
+        // Ensure y-axis starts at 0
+        beginAtZero: true,
       },
     },
     plugins: {
