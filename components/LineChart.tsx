@@ -1,10 +1,8 @@
 "use client";
 
 import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
-
-// Register required components for Chart.js
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+import { ChartOptions } from 'chart.js';
+import 'chart.js/auto'; // Automatically imports and registers necessary components
 
 interface LineChartProps {
   data: {
@@ -14,7 +12,7 @@ interface LineChartProps {
 }
 
 const LineChart: React.FC<LineChartProps> = ({ data }) => {
-  const options = {
+  const options: ChartOptions<'line'> = {
     scales: {
       x: {
         type: 'category', // Use 'category' scale for string labels
@@ -32,17 +30,16 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
           display: true,
           text: 'เวลาในการทำกิจกรรมของสุกรทั้งคอก (ชั่วโมง)',
         },
-        // Ensure y-axis starts at 0
-        beginAtZero: true,
+        beginAtZero: true, // Ensure y-axis starts at 0
       },
     },
     plugins: {
       legend: {
-        position: 'top' as const,
+        position: 'top',
       },
       tooltip: {
         callbacks: {
-          label: function(tooltipItem: any) {
+          label: function (tooltipItem: any) {
             return tooltipItem.dataset.label + ': ' + tooltipItem.formattedValue;
           },
         },
