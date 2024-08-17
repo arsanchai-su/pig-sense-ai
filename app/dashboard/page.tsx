@@ -2,6 +2,43 @@
 import { useEffect, useState } from 'react';
 import Layout from '@/components/Layout';
 
+// Declare the YT namespace and types
+declare global {
+  namespace YT {
+    class Player {
+      constructor(elementId: string, options: PlayerOptions);
+      destroy(): void;
+      playVideo(): void;
+      seekTo(seconds: number): void;
+    }
+
+    interface PlayerOptions {
+      videoId: string;
+      events: {
+        onReady: (event: PlayerEvent) => void;
+        onStateChange: (event: OnStateChangeEvent) => void;
+      };
+      playerVars?: {
+        autoplay?: 1 | 0;
+        mute?: 1 | 0;
+      };
+    }
+
+    interface PlayerEvent {
+      target: Player;
+    }
+
+    interface OnStateChangeEvent {
+      data: number;
+      target: Player;
+    }
+
+    const PlayerState: {
+      ENDED: number;
+    };
+  }
+}
+
 const Dashboard: React.FC = () => {
   const videoId = 'kKZ1qri1DGY'; // Hardcode video1 ID
   const [player, setPlayer] = useState<YT.Player | null>(null);
