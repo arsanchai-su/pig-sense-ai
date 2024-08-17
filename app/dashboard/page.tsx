@@ -106,7 +106,7 @@ const Dashboard: React.FC = () => {
       
       <div id="videoPlayer" className="w-full h-64 sm:h-80 md:h-96 lg:h-[36rem]"></div>
       {/* Text after vedio player */}
-      <h1 className="text-1xl font-bold mb-4 text-gray-600">**เป็นการจำลองการแสดงผลเท่านั้น</h1>
+    
 
     </Layout>
   );
