@@ -1,220 +1,110 @@
 "use client";
 
-import React, { useState } from 'react';
+import React from 'react';
 import Layout from '@/components/Layout';
 import LineChart from '@/components/LineChart';
-import BarChart from '@/components/BarChart';
-import PieChart from '@/components/PieChart';
+import LineChartTemp from '@/components/LineChartTemp';
+import LineChartHumi from '@/components/LineChartHumi';
 import '../chartConfig'; // Import the registration file
 
 const Environment = () => {
-  const [selectedFarm, setSelectedFarm] = useState('คอกที่ 1 ฟาร์มอำเภอท่าศาลา');
-  const [selectedDate, setSelectedDate] = useState('6 Aug');
+  // Function to generate time labels from 4PM yesterday to 3PM today
+  const generateTimeLabels = () => {
+    const labels = [];
+    const currentHour = new Date().getHours();
+    for (let i = 0; i < 24; i++) {
+      const time = new Date();
+      time.setHours(currentHour + i - 23); // Start from 4PM yesterday
+      time.setMinutes(0); // Set minutes to 0 to round down to the nearest hour
+      const label = time.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+      labels.push(label);
+    }
+    return labels;
+  };
 
-  const lineData1 = {
-    labels: ['6 Aug', '7 Aug', '8 Aug', '9 Aug', '10 Aug', '11 Aug', '12 Aug'],
+  // Function to generate random temperature data (30 ± 5 degrees) with one decimal place
+  const generateRandomTempData = () => {
+    return Array.from({ length: 24 }, () => (Math.random() * 10 + 25).toFixed(1));
+  };
+
+  // Function to generate random humidity data (44 to 88%) with one decimal place
+  const generateRandomHumidityData = () => {
+    return Array.from({ length: 24 }, () => (Math.random() * 44 + 44).toFixed(1));
+  };
+
+  // Generate the labels and data for the graphs
+  const labels = generateTimeLabels();
+  const tempData1 = generateRandomTempData();
+  const tempData2 = generateRandomTempData();
+  const tempData3 = generateRandomTempData();
+  const humidityData1 = generateRandomHumidityData();
+  const humidityData2 = generateRandomHumidityData();
+  const humidityData3 = generateRandomHumidityData();
+
+  // Data for temperature (temp1, temp2, temp3)
+  const tempData = {
+    labels: labels,
     datasets: [
       {
-        label: 'นอน',
-        data: [57, 49, 52, 55, 51, 54, 48],
-        borderColor: 'rgba(75, 192, 192, 1)',
+        label: 'คอกที่ 1 ',
+        data: tempData1,
+        borderColor: 'rgba(255, 99, 132, 1)',
         fill: false,
       },
       {
-        label: 'นั่ง',
-        data: [5, 7, 6.6, 5.6, 7.3, 3.2, 4],
-        borderColor: 'rgba(153, 102, 255, 1)',
-        fill: false,
-      },
-      {
-        label: 'ยืน',
-        data: [25, 31, 22, 27, 34, 20, 33],
-        borderColor: 'rgba(255, 159, 64, 1)',
-        fill: false,
-      },
-      {
-        label: 'กิน',
-        data: [5.3, 5.9, 6, 6.2, 5.4, 4.9, 5.5],
+        label: 'คอกที่ 2',
+        data: tempData2,
         borderColor: 'rgba(54, 162, 235, 1)',
         fill: false,
       },
       {
-        label: 'ดื่มน้ำ',
-        data: [2.2, 2.5, 2.1, 1.9, 1.8, 2.3, 2.4],
-        borderColor: 'rgba(255, 99, 132, 1)',
+        label: 'คอกที่ 3',
+        data: tempData3,
+        borderColor: 'rgba(75, 192, 192, 1)',
         fill: false,
       },
     ],
   };
 
-  const lineData2 = {
-    labels: ['6 Aug', '7 Aug', '8 Aug', '9 Aug', '10 Aug', '11 Aug', '12 Aug'],
+  // Data for humidity (humidity1, humidity2, humidity3)
+  const humidityData = {
+    labels: labels,
     datasets: [
       {
-        label: 'นอน',
-        data: [60, 51, 54, 58, 53, 57, 50],
-        borderColor: 'rgba(75, 192, 192, 1)',
-        fill: false,
-      },
-      {
-        label: 'นั่ง',
-        data: [5, 7, 6.6, 5.6, 7.3, 3.2, 4],
+        label: 'คอกที่ 1',
+        data: humidityData1,
         borderColor: 'rgba(153, 102, 255, 1)',
         fill: false,
       },
       {
-        label: 'ยืน',
-        data: [22, 29, 19, 24, 31, 19, 30],
+        label: 'คอกที่ 2',
+        data: humidityData2,
         borderColor: 'rgba(255, 159, 64, 1)',
         fill: false,
       },
       {
-        label: 'กิน',
-        data: [5.3, 5.9, 6, 6.2, 5.4, 4.9, 5.5],
-        borderColor: 'rgba(54, 162, 235, 1)',
+        label: 'คอกที่ 3',
+        data: humidityData3,
+        borderColor: 'rgba(255, 206, 86, 1)',
         fill: false,
-      },
-      {
-        label: 'ดื่มน้ำ',
-        data: [2.2, 2.5, 2.1, 1.9, 1.8, 2.3, 2.4],
-        borderColor: 'rgba(255, 99, 132, 1)',
-        fill: false,
-      },
-    ],
-  };
-
-  const lineData3 = {
-    labels: ['6 Aug', '7 Aug', '8 Aug', '9 Aug', '10 Aug', '11 Aug', '12 Aug'],
-    datasets: [
-      {
-        label: 'นอน',
-        data: [55, 47, 50, 53, 49, 52, 46],
-        borderColor: 'rgba(75, 192, 192, 1)',
-        fill: false,
-      },
-      {
-        label: 'นั่ง',
-        data: [7, 8, 7.6, 6.6, 8.3, 5.2, 5.7],
-        borderColor: 'rgba(153, 102, 255, 1)',
-        fill: false,
-      },
-      {
-        label: 'ยืน',
-        data: [26, 33, 27, 28, 36, 22, 31],
-        borderColor: 'rgba(255, 159, 64, 1)',
-        fill: false,
-      },
-      {
-        label: 'กิน',
-        data: [5.3, 5.9, 6, 6.2, 5.4, 4.9, 5.5],
-        borderColor: 'rgba(54, 162, 235, 1)',
-        fill: false,
-      },
-      {
-        label: 'ดื่มน้ำ',
-        data: [2.2, 2.5, 2.1, 1.9, 1.8, 2.3, 2.4],
-        borderColor: 'rgba(255, 99, 132, 1)',
-        fill: false,
-      },
-    ],
-  };
-
-  const lineData = selectedFarm === 'คอกที่ 1 ฟาร์มอำเภอท่าศาลา' ? lineData1 :
-                   selectedFarm === 'คอกที่ 2 ฟาร์มอำเภอท่าศาลา' ? lineData2 : lineData3;
-
-  // Get the index of the selected date
-  const selectedIndex = lineData.labels.indexOf(selectedDate);
-
-  // Use the index to extract the corresponding data for the selected date
-  const selectedData = lineData.datasets.map(dataset => dataset.data[selectedIndex]);
-
-  const barData = {
-    labels: ['นอน', 'ยืน', 'นั่ง', 'กิน', 'ดื่มน้ำ'],
-    datasets: [
-      {
-        label: 'ชั่วโมงในการทำกิจกรรม',
-        data: selectedData,
-        backgroundColor: [
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 99, 132, 0.2)',
-        ],
-        borderColor: [
-          'rgba(75, 192, 192, 1)',
-          'rgba(255, 159, 64, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 99, 132, 1)',
-        ],
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const pieData = {
-    labels: ['นอน', 'ยืน', 'นั่ง', 'กิน', 'ดื่มน้ำ'],
-    datasets: [
-      {
-        label: '# of Votes',
-        data: selectedData,
-        backgroundColor: [
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 99, 132, 0.2)',
-        ],
-        borderColor: [
-          'rgba(75, 192, 192, 1)',
-          'rgba(255, 159, 64, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 99, 132, 1)',
-        ],
-        borderWidth: 1,
       },
     ],
   };
 
   return (
     <Layout>
-      <h1 className="text-2xl font-bold mb-4">รายงานภาพรวมพฤติกรรมสุกรในรอบสัปดาห์</h1>
+      <h1 className="text-2xl font-bold mb-4">รายงานอุณหภูมิและความชื้นในรอบสัปดาห์</h1>
       
-      {/* Full width LineChart */}
+      {/* Full width Temperature LineChart */}
       <div style={{ width: '100%', marginBottom: '20px' }}>
-        <select 
-          className='text-gray-600 mb-4' 
-          value={selectedFarm} 
-          onChange={(e) => setSelectedFarm(e.target.value)}
-        >
-          <option value="คอกที่ 1 ฟาร์มอำเภอท่าศาลา">คอกที่ 1 ฟาร์มอำเภอท่าศาลา</option>
-          <option value="คอกที่ 2 ฟาร์มอำเภอท่าศาลา">คอกที่ 2 ฟาร์มอำเภอท่าศาลา</option>
-          <option value="คอกที่ 3 ฟาร์มอำเภอท่าศาลา">คอกที่ 3 ฟาร์มอำเภอท่าศาลา</option>
-        </select>
-        <LineChart data={lineData} />
-          <select 
-            className='text-gray-600 mt-4' 
-            value={selectedDate} 
-            onChange={(e) => setSelectedDate(e.target.value)}
-          >
-            {lineData.labels.map((date, index) => (
-              <option key={index} value={date}>{date}</option>
-            ))}
-          </select>
+        <h2 className="text-xl font-bold mb-4">อุณหภูมิ</h2>
+        <LineChartTemp data={tempData} />
       </div>
 
-      {/* Flex container for BarChart and PieChart */}
-      <div style={{ display: 'flex', gap: '20px' }}>
-        <div style={{ flex: 1 }}>
-          <h1 className="text-xl font-bold mb-4">รายงานประจำวัน</h1>
-          <BarChart data={barData} />
-        </div>
-        <div style={{ flex: 1 }}>
-          <h1 className="text-xl font-bold mb-4">รายภาพรวมประจำวัน</h1>
-          <PieChart data={pieData} />
-        </div>
+      {/* Full width Humidity LineChart */}
+      <div style={{ width: '100%', marginBottom: '20px' }}>
+        <h2 className="text-xl font-bold mb-4">ค่าความชื้นสัมพัทธ์</h2>
+        <LineChartHumi data={humidityData} />
       </div>
     </Layout>
   );

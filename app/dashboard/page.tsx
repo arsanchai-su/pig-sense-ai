@@ -40,25 +40,32 @@ declare global {
 }
 
 const Dashboard: React.FC = () => {
-  const videoId = 'kKZ1qri1DGY'; // Hardcode video1 ID
+  const videoId = 'kKZ1qri1DGY'; // Hardcoded video ID
   const [player, setPlayer] = useState<YT.Player | null>(null);
+  const [isClient, setIsClient] = useState(false); // State to check if on client
 
   useEffect(() => {
+    setIsClient(true); // Component has mounted on client
+  }, []);
+
+  useEffect(() => {
+    if (!isClient) return; // Only run this if on the client side
+
     const initializePlayer = () => {
       if (player) {
-        player.destroy(); // Destroy the existing player before re-initializing
+        player.destroy(); // Destroy existing player before re-initializing
       }
 
       const newPlayer = new YT.Player('videoPlayer', {
-        videoId: videoId, // Always use video1 ID
+        videoId: videoId,
         events: {
           'onReady': (event: YT.PlayerEvent) => {
             event.target.playVideo();
           },
           'onStateChange': (event: YT.OnStateChangeEvent) => {
             if (event.data === YT.PlayerState.ENDED) {
-              event.target.seekTo(0); // Restart the video
-              event.target.playVideo(); // Play the video again
+              event.target.seekTo(0); // Restart video
+              event.target.playVideo(); // Replay video
             }
           },
         },
@@ -71,16 +78,16 @@ const Dashboard: React.FC = () => {
     };
 
     if (typeof window !== 'undefined' && (window as any).YT && (window as any).YT.Player) {
-      initializePlayer(); // API is already loaded, initialize the player
+      initializePlayer(); // API already loaded, initialize player
     } else {
-      // Load the YouTube API script
+      // Load YouTube API script
       const tag = document.createElement('script');
       tag.src = 'https://www.youtube.com/iframe_api';
       const firstScriptTag = document.getElementsByTagName('script')[0];
       firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
 
       (window as any).onYouTubeIframeAPIReady = () => {
-        initializePlayer(); // Initialize the player once the API is ready
+        initializePlayer(); // Initialize player once API is ready
       };
     }
 
@@ -90,14 +97,16 @@ const Dashboard: React.FC = () => {
         setPlayer(null); // Reset player state
       }
     };
-  }, []);
+  }, [isClient]);
+
+  if (!isClient) {
+    return null; // Render nothing on the server
+  }
 
   return (
     <Layout>
-      {/* Text before select */}
       <h1 className="text-2xl font-bold mb-4">ภาพวีดีโอแสดงการทำงานตรวจจับพฤติกรรมสุกร</h1>
       
-      {/* Dummy select option, non-functional */}
       <select>
         <option>คอกที่ 1 ฟาร์มอำเภอท่าศาลา</option>
         <option>คอกที่ 2 ฟาร์มอำเภอท่าศาลา</option>
@@ -105,9 +114,6 @@ const Dashboard: React.FC = () => {
       </select>
       
       <div id="videoPlayer" className="w-full h-64 sm:h-80 md:h-96 lg:h-[36rem]"></div>
-      {/* Text after vedio player */}
-    
-
     </Layout>
   );
 };
