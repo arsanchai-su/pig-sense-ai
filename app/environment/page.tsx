@@ -7,7 +7,7 @@ import BarChart from '@/components/BarChart';
 import PieChart from '@/components/PieChart';
 import '../chartConfig'; // Import the registration file
 
-const Report = () => {
+const Environment = () => {
   const [selectedFarm, setSelectedFarm] = useState('คอกที่ 1 ฟาร์มอำเภอท่าศาลา');
   const [selectedDate, setSelectedDate] = useState('6 Aug');
 
@@ -220,4 +220,4 @@ const Report = () => {
   );
 };
 
-export default Report;
+export default Environment;

@@ -30,6 +30,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <Link href="/report" className="block mb-4">
               รายงานผลการตรวจจับพฤติกรรมสุกร
             </Link>
+            <Link href="/environment" className="block mb-4">
+              สภาพแวดล้อมของคอกสุกร
+            </Link>
             <Link href="/about-me" className="block">
               About Me
             </Link>

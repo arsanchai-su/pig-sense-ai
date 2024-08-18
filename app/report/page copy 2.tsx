@@ -11,6 +11,7 @@ const Report = () => {
   const [selectedFarm, setSelectedFarm] = useState('คอกที่ 1 ฟาร์มอำเภอท่าศาลา');
   const [selectedDate, setSelectedDate] = useState('6 Aug');
 
+  // Define your line data variations
   const lineData1 = {
     labels: ['6 Aug', '7 Aug', '8 Aug', '9 Aug', '10 Aug', '11 Aug', '12 Aug'],
     datasets: [
@@ -119,21 +120,16 @@ const Report = () => {
     ],
   };
 
+  // Select the appropriate line data based on the selected farm
   const lineData = selectedFarm === 'คอกที่ 1 ฟาร์มอำเภอท่าศาลา' ? lineData1 :
                    selectedFarm === 'คอกที่ 2 ฟาร์มอำเภอท่าศาลา' ? lineData2 : lineData3;
-
-  // Get the index of the selected date
-  const selectedIndex = lineData.labels.indexOf(selectedDate);
-
-  // Use the index to extract the corresponding data for the selected date
-  const selectedData = lineData.datasets.map(dataset => dataset.data[selectedIndex]);
 
   const barData = {
     labels: ['นอน', 'ยืน', 'นั่ง', 'กิน', 'ดื่มน้ำ'],
     datasets: [
       {
         label: 'ชั่วโมงในการทำกิจกรรม',
-        data: selectedData,
+        data: lineData.datasets[0].data.map((_, idx) => lineData.datasets[0].data[idx]), // Example: use lineData data
         backgroundColor: [
           'rgba(75, 192, 192, 0.2)',
           'rgba(255, 159, 64, 0.2)',
@@ -154,11 +150,11 @@ const Report = () => {
   };
 
   const pieData = {
-    labels: ['นอน', 'ยืน', 'นั่ง', 'กิน', 'ดื่มน้ำ'],
+    labels: ['นอน', 'ยืน', 'กิน', 'นั่ง', 'ดื่มน้ำ'],
     datasets: [
       {
         label: '# of Votes',
-        data: selectedData,
+        data: lineData.datasets[0].data.map((_, idx) => lineData.datasets[0].data[idx]), // Example: use lineData data
         backgroundColor: [
           'rgba(75, 192, 192, 0.2)',
           'rgba(255, 159, 64, 0.2)',
@@ -181,38 +177,38 @@ const Report = () => {
   return (
     <Layout>
       <h1 className="text-2xl font-bold mb-4">รายงานภาพรวมพฤติกรรมสุกรในรอบสัปดาห์</h1>
-      
-      {/* Full width LineChart */}
       <div style={{ width: '100%', marginBottom: '20px' }}>
         <select 
-          className='text-gray-600 mb-4' 
+          className='text-gray-600' 
           value={selectedFarm} 
           onChange={(e) => setSelectedFarm(e.target.value)}
         >
-          <option value="คอกที่ 1 ฟาร์มอำเภอท่าศาลา">คอกที่ 1 ฟาร์มอำเภอท่าศาลา</option>
-          <option value="คอกที่ 2 ฟาร์มอำเภอท่าศาลา">คอกที่ 2 ฟาร์มอำเภอท่าศาลา</option>
-          <option value="คอกที่ 3 ฟาร์มอำเภอท่าศาลา">คอกที่ 3 ฟาร์มอำเภอท่าศาลา</option>
+          <option>คอกที่ 1 ฟาร์มอำเภอท่าศาลา</option>
+          <option>คอกที่ 2 ฟาร์มอำเภอท่าศาลา</option>
+          <option>คอกที่ 3 ฟาร์มอำเภอท่าศาลา</option>
         </select>
         <LineChart data={lineData} />
-          <select 
-            className='text-gray-600 mt-4' 
-            value={selectedDate} 
-            onChange={(e) => setSelectedDate(e.target.value)}
-          >
-            {lineData.labels.map((date, index) => (
-              <option key={index} value={date}>{date}</option>
-            ))}
-          </select>
       </div>
-
-      {/* Flex container for BarChart and PieChart */}
+      <div style={{ width: '100%', marginBottom: '20px' }}>
+        <select 
+          className='text-gray-600' 
+          value={selectedDate} 
+          onChange={(e) => setSelectedDate(e.target.value)}
+        >
+          {lineData.labels.map((date, index) => (
+            <option key={index} value={date}>
+              {date}
+            </option>
+          ))}
+        </select>
+      </div>
       <div style={{ display: 'flex', gap: '20px' }}>
         <div style={{ flex: 1 }}>
-          <h1 className="text-xl font-bold mb-4">รายงานประจำวัน</h1>
+          <h1 className="text-1xl font-bold mb-4">รายงานประจำวัน</h1>
           <BarChart data={barData} />
         </div>
         <div style={{ flex: 1 }}>
-          <h1 className="text-xl font-bold mb-4">รายภาพรวมประจำวัน</h1>
+          <h1 className="text-1xl font-bold mb-4">รายภาพรวมประจำวัน</h1>
           <PieChart data={pieData} />
         </div>
       </div>
