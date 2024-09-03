@@ -9,10 +9,10 @@ import '../chartConfig'; // Import the registration file
 
 const Report = () => {
   const [selectedFarm, setSelectedFarm] = useState('คอกที่ 1 ฟาร์มอำเภอท่าศาลา');
-  const [selectedDate, setSelectedDate] = useState('6 Aug');
+  const [selectedDate, setSelectedDate] = useState('3 Sep');
 
   const lineData1 = {
-    labels: ['6 Aug', '7 Aug', '8 Aug', '9 Aug', '10 Aug', '11 Aug', '12 Aug'],
+    labels: ['28 Aug', '29 Aug', '30 Aug', '31 Aug', '1 Sep', '2 Sep', '3 Sep'],
     datasets: [
       {
         label: 'นอน',
@@ -48,7 +48,7 @@ const Report = () => {
   };
 
   const lineData2 = {
-    labels: ['6 Aug', '7 Aug', '8 Aug', '9 Aug', '10 Aug', '11 Aug', '12 Aug'],
+    labels: ['28 Aug', '29 Aug', '30 Aug', '31 Aug', '1 Sep', '2 Sep', '3 Sep'],
     datasets: [
       {
         label: 'นอน',
@@ -84,7 +84,7 @@ const Report = () => {
   };
 
   const lineData3 = {
-    labels: ['6 Aug', '7 Aug', '8 Aug', '9 Aug', '10 Aug', '11 Aug', '12 Aug'],
+    labels: ['28 Aug', '29 Aug', '30 Aug', '31 Aug', '1 Sep', '2 Sep', '3 Sep'],
     datasets: [
       {
         label: 'นอน',
