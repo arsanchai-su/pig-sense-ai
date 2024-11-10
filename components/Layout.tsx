@@ -49,7 +49,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </div>
 
       {/* Footer */}
-      <footer className="w-full h-24 flex items-center justify-center border-t mt-auto">
+      <footer className="w-full h-30 flex items-center justify-center border-t mt-auto">
         <a
           href="https://www.wu.ac.th/th"
           target="_blank"
@@ -57,7 +57,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           className="flex items-center justify-center gap-2"
         >
           <Image
-            src="https://upload.wikimedia.org/wikipedia/th/thumb/e/ed/Walailak_University_Logo.svg/480px-Walailak_University_Logo.svg.png"
+            src="/WalailakUniversityLogo.jpg"
             alt="Walailak University Logo"
             width={100}
             height={24}
