@@ -178,6 +178,35 @@ const Report = () => {
     ],
   };
 
+  const [isNotificationOn, setNotificationOn] = useState(false);
+
+  const handleToggleNotification = async () => {
+    const newState = !isNotificationOn;
+    setNotificationOn(newState);
+  
+    if (newState) {
+      try {
+        const response = await fetch("/api/sendImageNotification", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            images: ["daliy.jpg", "daliy2.jpg", "week_graph.jpg"],
+          }),
+        });
+  
+        const result = await response.json();
+        if (!result.success) {
+          console.error("Error sending Telegram notification:", result.error);
+        }
+      } catch (error) {
+        console.error("Error sending request:", error);
+      }
+    }
+  };
+  
+
   return (
     <Layout>
       <h1 className="text-2xl font-bold mb-4">รายงานภาพรวมพฤติกรรมสุกรในรอบสัปดาห์</h1>
@@ -216,6 +245,40 @@ const Report = () => {
           <PieChart data={pieData} />
         </div>
       </div>
+
+
+      <div className="mt-4">
+        <span className="mr-4">🔔 ส่งการแจ้งเตือนไปยัง Telegram:</span>
+        <label className="relative inline-flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            className="sr-only peer"
+            checked={isNotificationOn}
+            onChange={handleToggleNotification}
+          />
+          <div
+            className={`w-11 h-6 rounded-full transition-all duration-300 ${
+              isNotificationOn
+                ? "bg-green-600 peer-focus:ring-2 peer-focus:ring-green-400"
+                : "bg-gray-300 border-2 border-red-500"
+            }`}
+          ></div>
+          <span
+            className={`ml-2 font-semibold ${
+              isNotificationOn ? "text-blue-600" : "text-red-500"
+            }`}
+          >
+            {isNotificationOn ? "ON" : "OFF"}
+          </span>
+        </label>
+      </div>
+
+
+      <div className="mt-6">
+        <img src="/QR.jpg" alt="Scan for Telegram Result" className="w-40 h-40" />
+        <p className="text-sm mt-2 text-gray-600">📲 Scan เพื่อรับการแจ้งเตือนผ่าน Telegram กลุ่ม</p>
+      </div>
+
     </Layout>
   );
 };
