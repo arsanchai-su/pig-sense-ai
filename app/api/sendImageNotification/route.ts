@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
 
     const imageUrl = image.startsWith("http")
       ? image
-      : `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/${image}`;
+      : `${process.env.NEXT_PUBLIC_SITE_URL}/${image}`;
 
     const response = await fetch(TELEGRAM_API_URL, {
       method: "POST",
