@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React ,{ useState } from 'react';
 import Layout from '@/components/Layout';
 import LineChart from '@/components/LineChart';
 import LineChartTemp from '@/components/LineChartTemp';
@@ -91,6 +91,36 @@ const Environment = () => {
     ],
   };
 
+  const [isNotificationOn, setNotificationOn] = useState(false);
+  
+    const handleToggleNotification = async () => {
+      const newState = !isNotificationOn;
+      setNotificationOn(newState);
+    
+      const imageFiles = ["humi_day.jpg", "temp_day.jpg"]; // Array of image filenames
+      try {
+        // Loop through each image file in the array
+        for (let i = 0; i < imageFiles.length; i++) {
+          const response = await fetch("/api/sendImageNotification", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              images: imageFiles[i], // Use the image filename from the array
+            }),
+          });
+  
+          const result = await response.json();
+          if (!result.success) {
+            console.error("Error sending Telegram notification:", result.error);
+          }
+        }
+      } catch (error) {
+        console.error("Error sending request:", error);
+      }
+    };
+
   return (
     <Layout>
       <h1 className="text-2xl font-bold mb-4">รายงานอุณหภูมิและความชื้นในรอบสัปดาห์</h1>
@@ -106,6 +136,40 @@ const Environment = () => {
         <h2 className="text-xl font-bold mb-4">ค่าความชื้นสัมพัทธ์</h2>
         <LineChartHumi data={humidityData} />
       </div>
+
+      <div className="mt-4">
+        <span className="mr-4">🔔 ส่งการแจ้งเตือนไปยัง Telegram:</span>
+        <label className="relative inline-flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            className="sr-only peer"
+            checked={isNotificationOn}
+            onChange={handleToggleNotification}
+          />
+          <div
+            className={`w-11 h-6 rounded-full transition-all duration-300 ${
+              isNotificationOn
+                ? "bg-green-600 peer-focus:ring-2 peer-focus:ring-green-400"
+                : "bg-gray-300 border-2 border-red-500"
+            }`}
+          ></div>
+          <span
+            className={`ml-2 font-semibold ${
+              isNotificationOn ? "text-blue-600" : "text-red-500"
+            }`}
+          >
+            {isNotificationOn ? "ON" : "OFF"}
+          </span>
+        </label>
+      </div>
+
+
+      <div className="mt-6">
+        <img src="/QR.jpg" alt="Scan for Telegram Result" className="w-40 h-40" />
+        <p className="text-sm mt-2 text-gray-600">📲 Scan เพื่อรับการแจ้งเตือนผ่าน Telegram กลุ่ม</p>
+      </div>
+
+
     </Layout>
   );
 };
