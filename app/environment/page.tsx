@@ -137,7 +137,7 @@ const Environment = () => {
         <LineChartHumi data={humidityData} />
       </div>
 
-      <div className="mt-4">
+      {/* <div className="mt-4">
         <span className="mr-4">🔔 ส่งการแจ้งเตือนไปยัง Telegram:</span>
         <label className="relative inline-flex items-center cursor-pointer">
           <input
@@ -161,13 +161,13 @@ const Environment = () => {
             {isNotificationOn ? "ON" : "OFF"}
           </span>
         </label>
-      </div>
-
+      </div> */}
+{/* 
 
       <div className="mt-6">
         <img src="/QR.jpg" alt="Scan for Telegram Result" className="w-40 h-40" />
         <p className="text-sm mt-2 text-gray-600">📲 Scan เพื่อรับการแจ้งเตือนผ่าน Telegram กลุ่ม</p>
-      </div>
+      </div> */}
 
 
     </Layout>
