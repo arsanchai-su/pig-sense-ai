@@ -184,25 +184,27 @@ const Report = () => {
     const newState = !isNotificationOn;
     setNotificationOn(newState);
   
-    if (newState) {
-      try {
+    const imageFiles = ["daliy.jpg", "daliy2.jpg", "week_graph.jpg"]; // Array of image filenames
+    try {
+      // Loop through each image file in the array
+      for (let i = 0; i < imageFiles.length; i++) {
         const response = await fetch("/api/sendImageNotification", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            images: ["daliy.jpg", "daliy2.jpg", "week_graph.jpg"],
+            images: imageFiles[i], // Use the image filename from the array
           }),
         });
-  
+
         const result = await response.json();
         if (!result.success) {
           console.error("Error sending Telegram notification:", result.error);
         }
-      } catch (error) {
-        console.error("Error sending request:", error);
       }
+    } catch (error) {
+      console.error("Error sending request:", error);
     }
   };
   

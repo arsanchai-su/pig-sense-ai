@@ -10,15 +10,15 @@ if (!BOT_TOKEN || !TELEGRAM_CHAT_ID) {
 
 export async function POST(req: NextRequest) {
   try {
-    const { image } = await req.json();
+    const { images } = await req.json();
 
-    if (!image) {
+    if (!images) {
       return NextResponse.json({ success: false, error: "Image is required" }, { status: 400 });
     }
 
-    const imageUrl = image.startsWith("http")
-      ? image
-      : `${process.env.NEXT_PUBLIC_SITE_URL}/${image}`;
+    const imageUrl =  `${process.env.NEXT_PUBLIC_SITE_URL}/${images}`;
+
+    console.log(imageUrl);
 
     const response = await fetch(TELEGRAM_API_URL, {
       method: "POST",
