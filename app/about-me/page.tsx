@@ -7,7 +7,7 @@ const AboutMe: React.FC = () => {
   const [isNotificationOn, setNotificationOn] = useState(false);
 
   const sendTelegramNotification = async () => {
-    const message = `🐷 แจ้งเตือน เกิดการกัดกันของหมู`;
+    const message = `🚨แจ้งเตือน เกิดการกัดกันของหมู🐷`;
     try {
       await fetch("/api/sendNotification", {
         method: "POST",
