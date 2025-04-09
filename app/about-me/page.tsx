@@ -1,7 +1,31 @@
+'use client'
 import React from 'react';
+import { useEffect, useState } from "react";
 import Layout from '@/components/Layout';
 
 const AboutMe: React.FC = () => {
+  const [isNotificationOn, setNotificationOn] = useState(false);
+
+  const sendTelegramNotification = async () => {
+    const message = `🐷 แจ้งเตือน เกิดการกัดกันของหมู`;
+    try {
+      await fetch("/api/sendNotification", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message }),
+      });
+    } catch (error) {
+      console.error("Error sending Telegram notification:", error);
+    }
+  };
+
+  const handleToggle = () => {
+    const newState = !isNotificationOn;
+    setNotificationOn(newState);
+    if (newState) {
+      sendTelegramNotification();
+    }
+  };
   return (
     <Layout>
       <h1>About Me</h1>
@@ -46,6 +70,32 @@ const AboutMe: React.FC = () => {
             </tr>
           </tbody>
         </table>
+      </div>
+      {/* 🔔 Notification Toggle */}
+      <div className="mt-8">
+        <span className="mr-4"></span>
+        <label className="relative inline-flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            className="sr-only peer"
+            checked={isNotificationOn}
+            onChange={handleToggle}
+          />
+          <div
+            className={`w-11 h-6 rounded-full transition-all duration-300 ${
+              isNotificationOn
+                ? "bg-green-600 peer-focus:ring-2 peer-focus:ring-green-400"
+                : "bg-gray-300 border-2 border-red-500"
+            }`}
+          ></div>
+          <span
+            className={`ml-2 font-semibold ${
+              isNotificationOn ? "text-blue-600" : "text-red-500"
+            }`}
+          >
+            {isNotificationOn ? "ON" : "OFF"}
+          </span>
+        </label>
       </div>
     </Layout>
   );
